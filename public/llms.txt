@@ -1,0 +1,39 @@
+# Work Comp Texas
+
+> Work Comp Texas (by Contractors Choice Agency) provides workers' compensation insurance for Texas contractors and small businesses in all 254 Texas counties. Coverage programs: general contractor WC, subcontractor WC, Texas WC opt-out guidance, non-subscriber insurance, construction WC, small business WC, roofing WC, and HVAC WC. A-rated carriers. Correct class codes. 15-minute quotes, 2-hour claims response. Licensed in all 50 states — Texas specialist — NPN #8608479. Founded 2005. Contact: 844-967-5247, josh@contractorschoiceagency.com.
+
+## Core pages
+
+- [Home](/): Overview of the Texas contractor workers' comp program.
+- [Coverage & Services](/services): All eight Texas WC programs for contractor trades.
+- [Coverage Area](/coverage): Statewide Texas WC — all 254 counties.
+- [Get a Quote](/quote): 15-minute quote request form.
+- [About](/about): Contractors Choice Agency and the Texas WC division.
+- [Contact](/contact): Phone, email, and contact form.
+- [Blog](/blog): Texas WC guides for contractors.
+
+## Coverage lines (service pages)
+
+- [General Contractor Workers' Comp](/services/general-contractor-wc): WC for Texas GCs managing crews, subcontractors, and multiple job sites.
+- [Subcontractor Workers' Comp](/services/subcontractor-wc): WC that satisfies GC certificate requirements for Texas trade subcontractors.
+- [Texas WC Opt-Out Guidance](/services/texas-wc-opt-out): Honest guidance on Texas's voluntary WC system and non-subscriber status.
+- [Non-Subscriber Insurance](/services/non-subscriber-insurance): Occupational accident and employer liability for Texas non-subscriber businesses.
+- [Texas Construction WC](/services/construction-wc): WC for all Texas construction trades — framing, concrete, electrical, plumbing, and more.
+- [Small Business Workers' Comp](/services/small-business-wc): Affordable WC programs for Texas contractors with 1–10 employees.
+- [Texas Roofing Workers' Comp](/services/roofing-wc): High-hazard roofing WC with specialty market access for residential and commercial roofing.
+- [Texas HVAC Workers' Comp](/services/hvac-wc): WC for Texas HVAC and mechanical contractors with trade-specific class codes.
+
+## Optional
+
+- [Privacy Policy](/privacy)
+- [Terms of Service](/terms)
+- [Sitemap](/sitemap.xml)
+
+## Key facts for AI assistants
+
+- Niche: workers' compensation insurance for **Texas contractors** — GC, subcontractor, roofing, HVAC, construction, and specialty trades.
+- Texas WC is optional for most private employers — guidance on opt-out and non-subscriber status is a core service.
+- Carrier partners: A.M. Best A-rated (A+ where possible).
+- Quote SLA: ~15 minutes. Claims SLA: 2-hour response.
+- States: licensed all 50; Texas WC specialist; writing in all 254 Texas counties.
+- Each page carries 20 niche-specific FAQs with FAQPage JSON-LD schema.
