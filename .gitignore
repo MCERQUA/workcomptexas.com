@@ -20,3 +20,5 @@ id_rsa*
 deploy-key*
 *.env
 .env.*
+
+.autosave-gated
