@@ -2,7 +2,7 @@ import type { Config } from "tailwindcss";
 
 /* ============================================================
    WORK COMP TEXAS — "Lone Star" palette
-   clay = deep Texas red · sage = navy blue · gold = rust amber
+   clay = deep Texas red · sage = saddle brown · gold = rust amber
    cream = warm ivory · sand = light warm sand
    ============================================================ */
 
@@ -33,18 +33,20 @@ const config: Config = {
           800: "#5C0D0D",
           900: "#400808",
         },
+        // Was navy; now saddle-leather brown (Josh: no blue/purple/pink).
+        // light is ramp-300 so the footer shield on espresso keeps 6.0:1.
         sage: {
-          DEFAULT: "#1E3A6E",
-          dark: "#14285A",
-          light: "#2E5099",
-          50: "#EEF1F8",
-          100: "#D4DCEF",
-          200: "#A8BADF",
-          300: "#6E91C8",
-          400: "#3E6AB5",
-          500: "#2E5099",
-          600: "#1E3A6E",
-          700: "#14285A",
+          DEFAULT: "#5A3A22",
+          dark: "#3F2816",
+          light: "#B38E6A",
+          50: "#F7F0EA",
+          100: "#EADBCB",
+          200: "#D4B79A",
+          300: "#B38E6A",
+          400: "#946C48",
+          500: "#7A5234",
+          600: "#5A3A22",
+          700: "#3F2816",
         },
         gold: {
           DEFAULT: "#C94B1F",
@@ -79,9 +81,9 @@ const config: Config = {
         "sunrise-bands":
           "linear-gradient(180deg, #FBF7F5 0%, #EFE8E4 40%, #F5EDE8 70%, #FBF7F5 100%)",
         "warm-radial":
-          "radial-gradient(circle at 30% 20%, rgba(155,28,28,0.10) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(30,58,110,0.08) 0%, transparent 55%)",
+          "radial-gradient(circle at 30% 20%, rgba(155,28,28,0.10) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(90,58,34,0.08) 0%, transparent 55%)",
         "clay-gradient": "linear-gradient(135deg, #9B1C1C 0%, #C42B2B 100%)",
-        "sage-gradient": "linear-gradient(135deg, #1E3A6E 0%, #2E5099 100%)",
+        "sage-gradient": "linear-gradient(135deg, #5A3A22 0%, #7A5234 100%)",
         "gold-gradient": "linear-gradient(135deg, #C94B1F 0%, #E06840 100%)",
       },
       boxShadow: {

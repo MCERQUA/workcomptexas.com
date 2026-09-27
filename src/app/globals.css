@@ -5,7 +5,7 @@
 /* ============================================================
    WORK COMP TEXAS — "Lone Star" Design System
    Light · professional · Texas red + navy motif
-   clay = deep Texas red · sage = navy · gold = rust amber
+   clay = deep Texas red · sage = saddle brown · gold = rust amber
    ============================================================ */
 
 @layer base {
@@ -15,7 +15,7 @@
     --bg-white: #FFFFFF;
     --clay: #9B1C1C;
     --clay-dark: #7A1212;
-    --sage: #1E3A6E;
+    --sage: #5A3A22;
     --gold: #C94B1F;
     --espresso: #1A1414;
     --cocoa: #3D2B2B;
@@ -98,7 +98,7 @@
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 6px;
-    background: linear-gradient(90deg, #9B1C1C 0%, #C42B2B 30%, #1E3A6E 60%, #C94B1F 100%);
+    background: linear-gradient(90deg, #9B1C1C 0%, #C42B2B 30%, #5A3A22 60%, #C94B1F 100%);
   }
   .pill { @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-heading font-semibold uppercase tracking-wider; }
   .pill-clay { @apply pill bg-clay/10 text-clay border border-clay/20; }
@@ -114,7 +114,7 @@
     background-color: var(--bg-cream);
     background-image:
       radial-gradient(circle at 15% 15%, rgba(155, 28, 28, 0.08) 0%, transparent 35%),
-      radial-gradient(circle at 85% 75%, rgba(30, 58, 110, 0.07) 0%, transparent 40%);
+      radial-gradient(circle at 85% 75%, rgba(90, 58, 34, 0.07) 0%, transparent 40%);
   }
   .bg-sonoran-sand {
     background-color: var(--bg-sand);
@@ -125,14 +125,14 @@
   .bg-warm-radial {
     background:
       radial-gradient(ellipse at top, rgba(155, 28, 28, 0.10) 0%, transparent 55%),
-      radial-gradient(ellipse at bottom right, rgba(30, 58, 110, 0.07) 0%, transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(90, 58, 34, 0.07) 0%, transparent 50%),
       var(--bg-cream);
   }
   /* Lone Star band — Texas red, navy, and rust */
   .horizon-band {
     background: linear-gradient(180deg,
       #9B1C1C 0% 20%, #C42B2B 20% 38%, #C94B1F 38% 54%,
-      #1E3A6E 54% 70%, #9B1C1C 70% 86%, #C94B1F 86% 100%);
+      #5A3A22 54% 70%, #9B1C1C 70% 86%, #C94B1F 86% 100%);
   }
   .grain {
     background-image:
@@ -147,7 +147,7 @@
   .arch-divider::after {
     content: ""; position: absolute; inset: 0; margin: auto;
     width: 10rem; height: 1.4rem;
-    background: linear-gradient(90deg, #9B1C1C 0% 20%, #C42B2B 20% 40%, #C94B1F 40% 60%, #1E3A6E 60% 80%, #9B1C1C 80% 100%);
+    background: linear-gradient(90deg, #9B1C1C 0% 20%, #C42B2B 20% 40%, #C94B1F 40% 60%, #5A3A22 60% 80%, #9B1C1C 80% 100%);
     border-radius: 0.5rem; opacity: 0.92;
   }
 
@@ -160,7 +160,7 @@
   .prose-warm li::before {
     content: ""; position: absolute; left: 0; top: 0.55em;
     width: 1.1rem; height: 0.5rem;
-    background: linear-gradient(90deg, #9B1C1C 0% 35%, #C94B1F 35% 70%, #1E3A6E 70% 100%);
+    background: linear-gradient(90deg, #9B1C1C 0% 35%, #C94B1F 35% 70%, #5A3A22 70% 100%);
     border-radius: 0.15rem 0.5rem 0.15rem 0.5rem; opacity: 0.9;
   }
   .prose-warm strong { @apply text-espresso font-semibold; }
