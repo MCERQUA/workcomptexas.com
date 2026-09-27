@@ -51,11 +51,6 @@ export const COPY = {
   process: {
     lead: "No wrong class codes, no two-week delay for a certificate. A quick conversation, the right program for your trade and payroll, and a certificate your GC can accept — handled fast.",
   },
-  testimonials: {
-    eyebrow: "From Texas contractors",
-    h2Lead: "Texas contractors who found",
-    h2Highlight: "WC that actually worked",
-  },
   finalCta: {
     h2Lead: "Get Texas Workers' Comp",
     h2Highlight: "that fits your trade and your payroll.",
@@ -131,7 +126,7 @@ export const COPY = {
     lead: "Tell us about your Texas business and trade. We'll shop A-rated carriers with the right class codes and come back with real quotes in about 15 minutes — no obligation.",
     businessPlaceholder: "Lone Star Roofing LLC",
     emailPlaceholder: "mike@lonestarroofing.com",
-    phonePlaceholder: "(713) 555-0100",
+    phonePlaceholder: "Best number to reach you",
     messagePlaceholder:
       "Trade type, payroll, number of employees, Texas cities where you work, current WC situation, loss history, or anything else that helps us quote accurately…",
     errorMessage: "Something went wrong. Please call us at 844-967-5247 or try again.",

@@ -158,9 +158,3 @@ export const STATS = [
   { value: 15, suffix: " min", label: "Average quote turnaround", prefix: "" },
   { value: 254, suffix: "", label: "Texas counties covered", prefix: "" },
 ] as const;
-
-export const TESTIMONIALS = [
-  { quote: "Roofing WC in Texas is brutal to find at a decent rate. These guys got me a program that actually fit my payroll and my work type — residential re-roofs, not some generic high-rise code. First time in years my premium made sense.", name: "Bobby K.", role: "Roofing Contractor", location: "San Antonio, TX" },
-  { quote: "I didn't know Texas WC was optional until I called. They walked me through the non-subscriber vs. WC tradeoffs honestly, helped me decide what was right for my crew size, and placed a program the same week. Straight talk, no runaround.", name: "Debra L.", role: "General Contractor", location: "Austin, TX" },
-  { quote: "My GC in Houston was pulling me off jobs because I couldn't get a WC cert fast enough. These folks had a certificate issued in 48 hours and a rate I could actually work with. That's exactly what I needed.", name: "Marcus T.", role: "HVAC Contractor", location: "Houston, TX" },
-] as const;
