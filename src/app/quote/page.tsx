@@ -18,9 +18,69 @@ const trustItems = [
   { icon: MapPin, title: "All 50 states", desc: "Licensed nationwide — NPN #8608479." },
 ];
 
+type AcordKind = "text" | "number" | "date" | "textarea" | "select" | "radio" | "fein" | "zip";
+type AcordField = { name: string; label: string; kind: AcordKind; options?: string[][]; placeholder?: string };
+// All ACORD intake fields below are OPTIONAL and must stay registered in public/__forms.html.
+const ACORD_GROUPS: { title: string; desc: string; fields: AcordField[] }[] = [
+  { title: "Business entity", desc: "Entity details for the application.", fields: [
+    { name: "dba", label: "DBA / trade name", kind: "text" },
+    { name: "entityType", label: "Business entity type", kind: "select", options: [["Individual / Sole Proprietor", "Individual / Sole Proprietor"], ["Partnership", "Partnership"], ["Corporation", "Corporation"], ["S Corporation", "S Corporation"], ["LLC", "LLC"], ["Joint Venture", "Joint Venture"], ["Not For Profit", "Not For Profit"], ["Trust", "Trust"], ["Other", "Other"]] },
+    { name: "entityTypeOther", label: "If other, describe", kind: "text" },
+    { name: "fein", label: "FEIN (Federal Tax ID)", kind: "fein" },
+    { name: "businessStartDate", label: "Date business started", kind: "date" },
+    { name: "experienceMod", label: "Experience modification factor (if known)", kind: "text", placeholder: "e.g. 0.92 or 1.00" }
+  ] },
+  { title: "Mailing and physical location", desc: "Optional. Tell us if your mailing address differs from the business address above.", fields: [
+    { name: "mailingSameAsPhysical", label: "Is your mailing address the same as the business address above?", kind: "radio", options: [["Yes", "Yes"], ["No", "No"]] },
+    { name: "mailingAddress", label: "Mailing street address", kind: "text" },
+    { name: "mailingCity", label: "Mailing city", kind: "text" },
+    { name: "mailingState", label: "Mailing state", kind: "text" },
+    { name: "mailingZip", label: "Mailing ZIP code", kind: "zip" },
+    { name: "physicalState", label: "Business address state", kind: "text", placeholder: "TX" },
+    { name: "physicalCounty", label: "Business address county", kind: "text" }
+  ] },
+  { title: "Employees, payroll and operations", desc: "Optional detail used to rate workers' compensation.", fields: [
+    { name: "fullTimeEmployees", label: "Full-time employees", kind: "number" },
+    { name: "partTimeEmployees", label: "Part-time employees", kind: "number" },
+    { name: "annualRevenue", label: "Annual revenue ($)", kind: "number", placeholder: "$1,200,000" },
+    { name: "classPayroll1", label: "Annual payroll for class code 1 ($)", kind: "number" },
+    { name: "classPayroll2", label: "Annual payroll for class code 2 ($)", kind: "number" },
+    { name: "classPayroll3", label: "Annual payroll for class code 3 ($)", kind: "number" },
+    { name: "classPayroll4", label: "Annual payroll for class code 4 ($)", kind: "number" },
+    { name: "classPayroll5", label: "Annual payroll for class code 5 ($)", kind: "number" },
+    { name: "operationsDescription", label: "Description of operations by class (what each class code's employees actually do)", kind: "textarea" }
+  ] },
+  { title: "Subcontractors and certificates", desc: "Optional.", fields: [
+    { name: "usesSubcontractors", label: "Do you use subcontractors?", kind: "radio", options: [["Yes", "Yes"], ["No", "No"]] },
+    { name: "percentSubcontracted", label: "Percent of work subcontracted", kind: "number", placeholder: "25" },
+    { name: "subsProvideCOI", label: "Do you collect certificates of insurance from your subcontractors?", kind: "radio", options: [["Yes", "Yes"], ["No", "No"]] },
+    { name: "certificateHolderName", label: "Certificate holder name (if you need certificates issued)", kind: "text" },
+    { name: "certificateHolderAddress", label: "Certificate holder address", kind: "text" },
+    { name: "additionalInsuredNeeded", label: "Do you need additional insured or waiver of subrogation endorsements?", kind: "radio", options: [["Yes", "Yes"], ["No", "No"]] },
+    { name: "additionalInsuredName", label: "Additional insured name and address", kind: "textarea" }
+  ] },
+  { title: "Coverage timing and history", desc: "Optional.", fields: [
+    { name: "desiredEffectiveDate", label: "Desired policy effective date", kind: "date" },
+    { name: "currentlyInsured", label: "Do you currently have workers' compensation coverage?", kind: "radio", options: [["Yes", "Yes"], ["No", "No"]] },
+    { name: "coverageTerminated", label: "Has any carrier cancelled or declined your workers' compensation in the past 3 years?", kind: "radio", options: [["Yes", "Yes"], ["No", "No"]] },
+    { name: "carrierNonRenewing", label: "Is your current carrier non-renewing?", kind: "radio", options: [["Yes", "Yes"], ["No", "No"]] },
+    { name: "lossesLast3Years", label: "Any workers' compensation claims or losses in the last 3 years?", kind: "radio", options: [["Yes", "Yes"], ["No", "No"]] },
+    { name: "lossCount", label: "Number of losses", kind: "number" },
+    { name: "lossDate", label: "Date of most recent loss", kind: "date" },
+    { name: "lossLineOfBusiness", label: "Line of business of most recent loss", kind: "text", placeholder: "Workers compensation" },
+    { name: "lossDescription", label: "Describe the most recent loss", kind: "textarea" },
+    { name: "lossAmountPaid", label: "Amount paid ($)", kind: "number", placeholder: "0 if none" },
+    { name: "lossAmountReserved", label: "Amount reserved ($)", kind: "number", placeholder: "0 if none" },
+    { name: "lossHistoryStatus", label: "Is that claim open or closed?", kind: "radio", options: [["Open", "Open"], ["Closed", "Closed"]] },
+    { name: "lossAdditional", label: "Any other losses (date, type, amount, status)", kind: "textarea" }
+  ] },
+];
+const ACORD_INITIAL: Record<string, string> = Object.fromEntries(ACORD_GROUPS.flatMap((g) => g.fields.map((f) => [f.name, ""])));
+
 export default function QuotePage() {
   const [ownerFields, setOwnerFields] = useState<Record<string, string>>({});
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<Record<string, string>>({
+    ...ACORD_INITIAL,
     name: "", businessName: "", email: "", phone: "", state: "", serviceType: "", yearsInBusiness: "", message: "", "bot-field": "",
     address: "", city: "", zip: "",
     priorGrossSales: "", priorSubcontractorExpenses: "", priorEmployeeCount: "", priorEmployeePayroll: "",
@@ -42,7 +102,8 @@ export default function QuotePage() {
     setSubmitting(true);
     setError("");
     try {
-      await fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: new URLSearchParams({ "form-name": "quote", ...formData, ...ownerFields } as Record<string, string>).toString() });
+      const res = await fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: new URLSearchParams({ "form-name": "quote", ...formData, ...ownerFields } as Record<string, string>).toString() });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setSubmitted(true);
     } catch {
       setError(COPY.quote.errorMessage);
@@ -242,6 +303,44 @@ export default function QuotePage() {
                         </div>
                         <div><label htmlFor="priorPolicyExpiration" className={labelClass}>Policy expiration date</label><input id="priorPolicyExpiration" name="priorPolicyExpiration" type="date" value={formData.priorPolicyExpiration} onChange={handleChange} className={inputClass} /></div>
                       </div>
+
+                      {ACORD_GROUPS.map((g) => (
+                        <div key={g.title} className="space-y-4 pt-5 border-t border-adobe">
+                          <div>
+                            <h3 className="font-heading font-bold text-espresso text-sm uppercase tracking-wider">{g.title}</h3>
+                            <p className="text-xs text-mocha/70 mt-0.5">{g.desc}</p>
+                          </div>
+                          <div className="grid sm:grid-cols-2 gap-4">
+                            {g.fields.map((f) => (
+                              <div key={f.name} className={f.kind === "textarea" ? "sm:col-span-2" : ""}>
+                                {f.kind === "radio" ? (
+                                  <fieldset>
+                                    <legend className={labelClass}>{f.label}</legend>
+                                    <div className="flex gap-5">
+                                      {f.options!.map(([v, l]) => (
+                                        <label key={v} className="inline-flex items-center gap-2 text-sm text-espresso">
+                                          <input type="radio" name={f.name} value={v} checked={formData[f.name] === v} onChange={handleChange} />{l}
+                                        </label>
+                                      ))}
+                                    </div>
+                                  </fieldset>
+                                ) : (
+                                  <>
+                                    <label htmlFor={f.name} className={labelClass}>{f.label}</label>
+                                    {f.kind === "select" ? (
+                                      <select id={f.name} name={f.name} value={formData[f.name]} onChange={handleChange} className={inputClass}><option value="">Select…</option>{f.options!.map(([v, l]) => (<option key={v} value={v}>{l}</option>))}</select>
+                                    ) : f.kind === "textarea" ? (
+                                      <textarea id={f.name} name={f.name} rows={3} maxLength={500} value={formData[f.name]} onChange={handleChange} placeholder={f.placeholder} className={`${inputClass} resize-none`} />
+                                    ) : (
+                                      <input id={f.name} name={f.name} type={f.kind === "date" ? "date" : f.kind === "number" ? "number" : "text"} min={f.kind === "number" ? 0 : undefined} inputMode={f.kind === "number" || f.kind === "zip" ? "numeric" : undefined} pattern={f.kind === "fein" ? "[0-9]{2}-?[0-9]{7}" : f.kind === "zip" ? "[0-9]{5}(-[0-9]{4})?" : undefined} title={f.kind === "fein" ? "9 digits, e.g. 12-3456789" : f.kind === "zip" ? "5-digit ZIP code" : undefined} placeholder={f.kind === "fein" ? "12-3456789" : f.placeholder} value={formData[f.name]} onChange={handleChange} className={inputClass} />
+                                    )}
+                                  </>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
 
                       <div className="space-y-4 pt-5 border-t border-adobe">
                         <div>
