@@ -25,7 +25,8 @@ export default function ContactPage() {
     setSubmitting(true);
     setError("");
     try {
-      await fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: new URLSearchParams({ "form-name": "contact", ...formData } as Record<string, string>).toString() });
+      const res = await fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: new URLSearchParams({ "form-name": "contact", ...formData } as Record<string, string>).toString() });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setSubmitted(true);
     } catch {
       setError(COPY.contact.errorMessage);
