@@ -6,6 +6,7 @@ import { Footer } from "@/components/sections/Footer";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { SITE } from "@/lib/site";
 import { COPY } from "@/lib/content";
+import { submitLead } from "@/lib/submit-lead";
 import { CheckCircle2, ArrowRight, Phone, Mail, MapPin, Clock, MessageCircle } from "lucide-react";
 
 
@@ -25,9 +26,9 @@ export default function ContactPage() {
     setSubmitting(true);
     setError("");
     try {
-      const res = await fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: new URLSearchParams({ "form-name": "contact", ...formData } as Record<string, string>).toString() });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      setSubmitted(true);
+      const ok = await submitLead("contact", { ...formData });
+      if (ok) setSubmitted(true);
+      else setError(COPY.contact.errorMessage);
     } catch {
       setError(COPY.contact.errorMessage);
     } finally {

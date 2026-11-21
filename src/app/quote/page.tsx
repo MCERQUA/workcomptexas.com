@@ -9,6 +9,9 @@ import { SITE } from "@/lib/site";
 import { US_STATES, QUOTE_SERVICE_TYPES, YEARS_OPTIONS, COPY } from "@/lib/content";
 import { CheckCircle2, ShieldCheck, ArrowRight, Phone, Clock, Zap, MapPin } from "lucide-react";
 import { OwnersFieldset } from "@/components/forms/OwnersFieldset";
+import { submitLead } from "@/lib/submit-lead";
+import { AcordWcFields, SignatureFields } from "@/components/forms/AcordWcFields";
+import { validateAcordExtras, type Problem } from "@/components/forms/acord-wc-spec";
 
 
 const trustItems = [
@@ -24,9 +27,9 @@ type AcordField = { name: string; label: string; kind: AcordKind; options?: stri
 const ACORD_GROUPS: { title: string; desc: string; fields: AcordField[] }[] = [
   { title: "Business entity", desc: "Entity details for the application.", fields: [
     { name: "dba", label: "DBA / trade name", kind: "text" },
-    { name: "entityType", label: "Business entity type", kind: "select", options: [["Individual / Sole Proprietor", "Individual / Sole Proprietor"], ["Partnership", "Partnership"], ["Corporation", "Corporation"], ["S Corporation", "S Corporation"], ["LLC", "LLC"], ["Joint Venture", "Joint Venture"], ["Not For Profit", "Not For Profit"], ["Trust", "Trust"], ["Other", "Other"]] },
+    { name: "entityType", label: "Business entity type", kind: "select", options: [["Individual / Sole Proprietor", "Individual / Sole Proprietor"], ["Partnership", "Partnership"], ["Corporation", "Corporation"], ["S Corporation", "S Corporation"], ["LLC", "LLC"], ["Joint Venture", "Joint Venture"], ["Not For Profit", "Not For Profit"], ["Trust", "Trust"], ["Unincorporated Association", "Unincorporated Association"], ["Other", "Other"]] },
     { name: "entityTypeOther", label: "If other, describe", kind: "text" },
-    { name: "fein", label: "FEIN (Federal Tax ID)", kind: "fein" },
+    { name: "fein", label: "FEIN", kind: "fein" },
     { name: "businessStartDate", label: "Date business started", kind: "date" },
     { name: "experienceMod", label: "Experience modification factor (if known)", kind: "text", placeholder: "e.g. 0.92 or 1.00" }
   ] },
@@ -91,6 +94,7 @@ export default function QuotePage() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [problems, setProblems] = useState<Problem[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -99,12 +103,26 @@ export default function QuotePage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (formData["bot-field"]) return;
-    setSubmitting(true);
+    const form = e.currentTarget;
+    // ACORD 130 extras are uncontrolled inputs: read them from the DOM; React state wins on any shared name.
+    const domValues: Record<string, string> = {};
+    new FormData(form).forEach((v, k) => {
+      if (typeof v === "string") domValues[k] = v;
+    });
+    const all: Record<string, string> = { ...domValues, ...formData, ...ownerFields };
+    const found = validateAcordExtras(all);
+    setProblems(found);
     setError("");
+    if (found.length > 0) {
+      form.querySelector<HTMLElement>(`[name="${found[0].name}"]`)?.focus();
+      return;
+    }
+    setSubmitting(true);
     try {
-      const res = await fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: new URLSearchParams({ "form-name": "quote", ...formData, ...ownerFields } as Record<string, string>).toString() });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      setSubmitted(true);
+      // Leads webhook (JSON) first; Netlify Forms only if that did not store the lead.
+      const ok = await submitLead("quote", all);
+      if (ok) setSubmitted(true);
+      else setError(COPY.quote.errorMessage);
     } catch {
       setError(COPY.quote.errorMessage);
     } finally {
@@ -331,7 +349,10 @@ export default function QuotePage() {
                                     ) : f.kind === "textarea" ? (
                                       <textarea id={f.name} name={f.name} rows={3} maxLength={500} value={formData[f.name]} onChange={handleChange} placeholder={f.placeholder} className={`${inputClass} resize-none`} />
                                     ) : (
-                                      <input id={f.name} name={f.name} type={f.kind === "date" ? "date" : f.kind === "number" ? "number" : "text"} min={f.kind === "number" ? 0 : undefined} inputMode={f.kind === "number" || f.kind === "zip" ? "numeric" : undefined} pattern={f.kind === "fein" ? "[0-9]{2}-?[0-9]{7}" : f.kind === "zip" ? "[0-9]{5}(-[0-9]{4})?" : undefined} title={f.kind === "fein" ? "9 digits, e.g. 12-3456789" : f.kind === "zip" ? "5-digit ZIP code" : undefined} placeholder={f.kind === "fein" ? "12-3456789" : f.placeholder} value={formData[f.name]} onChange={handleChange} className={inputClass} />
+                                      <input id={f.name} name={f.name} type={f.kind === "date" ? "date" : f.kind === "number" ? "number" : "text"} min={f.kind === "number" ? 0 : undefined} inputMode={f.kind === "number" || f.kind === "zip" || f.kind === "fein" ? "numeric" : undefined} maxLength={f.kind === "fein" ? 10 : undefined} autoComplete={f.kind === "fein" ? "off" : undefined} aria-describedby={f.kind === "fein" ? "fein-help" : undefined} pattern={f.kind === "fein" ? "[0-9]{2}-[0-9]{7}" : f.kind === "zip" ? "[0-9]{5}(-[0-9]{4})?" : undefined} title={f.kind === "fein" ? "FEIN format: 12-3456789" : f.kind === "zip" ? "5-digit ZIP code" : undefined} placeholder={f.kind === "fein" ? "12-3456789" : f.placeholder} value={formData[f.name]} onChange={handleChange} className={inputClass} />
+                                    )}
+                                    {f.kind === "fein" && (
+                                      <p id="fein-help" className="mt-1 text-xs text-mocha">Do not enter a Social Security Number. Format 12-3456789, or leave blank.</p>
                                     )}
                                   </>
                                 )}
@@ -362,6 +383,16 @@ export default function QuotePage() {
                         <textarea id="message" name="message" rows={4} value={formData.message} onChange={handleChange} placeholder={COPY.quote.messagePlaceholder} className={`${inputClass} resize-none`} />
                       </div>
 
+                      <AcordWcFields inputClass={inputClass} labelClass={labelClass} mutedTextClass="text-mocha" borderClass="border-adobe" />
+
+                      <SignatureFields inputClass={inputClass} labelClass={labelClass} mutedTextClass="text-mocha" />
+
+                      {problems.length > 0 && (
+                        <div role="alert" className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-800">
+                          <p className="font-bold mb-1">Please fix the following before sending:</p>
+                          <ul className="list-disc pl-5">{problems.map((p) => <li key={p.name}>{p.message}</li>)}</ul>
+                        </div>
+                      )}
                       {error && <p className="text-red-600 text-sm font-medium">{error}</p>}
 
                       <button type="submit" disabled={submitting} className="w-full flex items-center justify-center gap-2 px-8 py-4 bg-clay-gradient text-white font-heading font-bold rounded-full shadow-warm hover:shadow-warm-lg hover:-translate-y-0.5 transition-all disabled:opacity-60 disabled:cursor-not-allowed">
