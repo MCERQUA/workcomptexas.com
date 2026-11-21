@@ -13,7 +13,6 @@ import {
   IDENTIFICATION,
   POLICY_DATES,
   PRIOR_ROWS,
-  INITIALS_NAME,
   UW_QUESTIONS,
   WORK_FROM_HOME_COUNT,
   WORK_STATES,
@@ -25,8 +24,8 @@ import {
 
 // ACORD 130 intake additions for /quote. Every control is a real named, UNCONTROLLED input (or a
 // controlled radio) so the page's FormData(form) picks it up; collapsed <details> keep their inputs
-// in the DOM, so nothing is lost when a section is closed. All fields here are OPTIONAL except the
-// initials box in <SignatureFields /> below (no signature on this site). See acord-wc-spec.ts for the rules.
+// in the DOM, so nothing is lost when a section is closed. All fields here are OPTIONAL.
+// See acord-wc-spec.ts for the rules.
 
 interface Classes {
   inputClass: string;
@@ -167,15 +166,6 @@ export function AcordWcFields({ inputClass, labelClass, mutedTextClass = "text-m
           </div>
         ))}
       </Group>
-    </div>
-  );
-}
-
-export function SignatureFields({ inputClass, labelClass }: Classes) {
-  return (
-    <div className="max-w-[12rem]">
-      <label htmlFor="acord-initials" className={labelClass}>Initials (optional)</label>
-      <input id="acord-initials" name={INITIALS_NAME} type="text" autoComplete="off" maxLength={6} placeholder="AB" className={inputClass} />
     </div>
   );
 }

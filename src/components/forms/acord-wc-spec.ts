@@ -164,9 +164,6 @@ export const WORK_FROM_HOME_COUNT: TextDef = {
   max: 6,
 };
 
-// ---- Initials (no signature section on this site; joshmac 2026-11-20) --------------------------------------------------------------------------------
-export const INITIALS_NAME = "applicantInitials";
-
 // ---- Every NEW field name (for __forms.html) --------------------------------------------------
 export function allNewFieldNames(): string[] {
   const names: string[] = [];
@@ -187,7 +184,6 @@ export function allNewFieldNames(): string[] {
   }
   UW_QUESTIONS.forEach((q) => names.push(q.name, explanationName(q.name)));
   names.push(WORK_FROM_HOME_COUNT.name);
-  names.push(INITIALS_NAME);
   return names;
 }
 
