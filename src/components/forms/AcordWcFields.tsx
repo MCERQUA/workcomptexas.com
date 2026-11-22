@@ -14,6 +14,8 @@ import {
   POLICY_DATES,
   PRIOR_ROWS,
   UW_QUESTIONS,
+  TRAVEL_STATES,
+  WFH_MIRROR,
   WORK_FROM_HOME_COUNT,
   WORK_STATES,
   classFields,
@@ -45,13 +47,15 @@ const Group = ({ title, note, children, borderClass = "border-adobe" }: { title:
 );
 
 export function AcordWcFields({ inputClass, labelClass, mutedTextClass = "text-mocha", borderClass = "border-adobe" }: Classes) {
+  const [wfh, setWfh] = useState("");
   const [ans, setAns] = useState<Record<string, string>>({});
   const setYN = (name: string, value: string) => setAns((p) => ({ ...p, [name]: value }));
 
-  const text = (d: TextDef, key?: string) => (
+  const text = (d: TextDef, key?: string, required = false) => (
     <div key={key ?? d.name}>
-      <label htmlFor={`acord-${d.name}`} className={labelClass}>{d.label}</label>
+      <label htmlFor={`acord-${d.name}`} className={labelClass}>{d.label}{required ? " *" : ""}</label>
       <input
+        required={required}
         id={`acord-${d.name}`}
         name={d.name}
         type={d.type ?? "text"}
@@ -193,7 +197,19 @@ export function AcordWcFields({ inputClass, labelClass, mutedTextClass = "text-m
         {UW_QUESTIONS.map((q) => (
           <div key={q.name} className="space-y-3">
             {yesNo(q.name, q.label)}
-            {q.name === "uwWorkFromHome" && ans[q.name] === "Yes" && text(WORK_FROM_HOME_COUNT)}
+            {q.name === "uwTravelOutOfState" && ans[q.name] === "Yes" && (
+              <div>
+                {text(TRAVEL_STATES, undefined, true)}
+                <p className="mt-1 text-xs text-mocha/70">List up to 10 states here. If more, list the extra states in the explanation box above.</p>
+              </div>
+            )}
+            {q.name === "uwWorkFromHome" && ans[q.name] === "Yes" && (
+              <div>
+                <label htmlFor={`acord-${WORK_FROM_HOME_COUNT.name}`} className={labelClass}>{WORK_FROM_HOME_COUNT.label} *</label>
+                <input id={`acord-${WORK_FROM_HOME_COUNT.name}`} name={WORK_FROM_HOME_COUNT.name} type="text" inputMode="numeric" maxLength={WORK_FROM_HOME_COUNT.max} autoComplete="off" required onChange={(e) => setWfh(e.target.value)} className={inputClass} />
+                <input type="hidden" name={WFH_MIRROR} value={wfh} />
+              </div>
+            )}
           </div>
         ))}
       </Group>

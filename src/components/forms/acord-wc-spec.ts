@@ -166,6 +166,15 @@ export const WORK_FROM_HOME_COUNT: TextDef = {
   max: 6,
 };
 
+export const TRAVEL_STATES: TextDef = {
+  name: "travelStates",
+  label: "Which other states do employees travel to or work in? (up to 10 states, two-letter codes)",
+  placeholder: "NM, LA, OK",
+  max: 40,
+};
+// Hidden mirror of uwWorkFromHomeCount under the name the ACORD 130 mapper reads (add-only; the original name stays).
+export const WFH_MIRROR = "workFromHomeCount";
+
 // ---- Every NEW field name (for __forms.html) --------------------------------------------------
 export function allNewFieldNames(): string[] {
   const names: string[] = [];
@@ -186,7 +195,7 @@ export function allNewFieldNames(): string[] {
   }
   names.push("ownerName1"); // hidden mirror of row 1's ownerNames (OwnersFieldset)
   UW_QUESTIONS.forEach((q) => names.push(q.name, explanationName(q.name)));
-  names.push(WORK_FROM_HOME_COUNT.name);
+  names.push(WORK_FROM_HOME_COUNT.name, WFH_MIRROR, TRAVEL_STATES.name);
   names.push("yn_subletWithoutCOI", "ynExplain_subletWithoutCOI", "ynExplain_usesSubcontractors", "yn_declinedCancelled", "ynExplain_declinedCancelled");
   return names;
 }
