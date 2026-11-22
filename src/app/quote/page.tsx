@@ -340,6 +340,24 @@ export default function QuotePage() {
                                         </label>
                                       ))}
                                     </div>
+                                    {f.name === "usesSubcontractors" && formData.usesSubcontractors === "Yes" && (
+                                      <div className="mt-3">
+                                        <label htmlFor="ynExplain_usesSubcontractors" className={labelClass}>Please explain (what work is subcontracted, short answer)</label>
+                                        <textarea id="ynExplain_usesSubcontractors" name="ynExplain_usesSubcontractors" rows={2} maxLength={136} className={`${inputClass} resize-none`} />
+                                      </div>
+                                    )}
+                                    {f.name === "coverageTerminated" && (
+                                      <>
+                                        {/* Mirror of the coverageTerminated answer under the canonical ACORD 130 name (declined/cancelled/non-renewed). */}
+                                        <input type="hidden" name="yn_declinedCancelled" value={formData.coverageTerminated} />
+                                        {formData.coverageTerminated === "Yes" && (
+                                          <div className="mt-3">
+                                            <label htmlFor="ynExplain_declinedCancelled" className={labelClass}>Please explain: which carrier, when and why (short answer)</label>
+                                            <textarea id="ynExplain_declinedCancelled" name="ynExplain_declinedCancelled" rows={2} maxLength={136} className={`${inputClass} resize-none`} />
+                                          </div>
+                                        )}
+                                      </>
+                                    )}
                                   </fieldset>
                                 ) : (
                                   <>

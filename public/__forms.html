@@ -157,7 +157,8 @@
   <input type="radio" name="wcCoverageForeign" value="No" />
   <input type="radio" name="wcCoverageManagedCare" value="Yes" />
   <input type="radio" name="wcCoverageManagedCare" value="No" />
-  <input type="text" name="wcCoverageOther" />
+  <input type="hidden" name="wcCoverageOther" />
+  <input type="text" name="wcCoverageOtherDescription" />
   <input type="text" name="classState1" />
   <input type="text" name="classDuties1" />
   <input type="text" name="classFullTime1" />
@@ -297,6 +298,12 @@
   <input type="radio" name="uwUnpaidWcPremium" value="No" />
   <textarea name="uwUnpaidWcPremiumExplanation"></textarea>
   <input type="text" name="uwWorkFromHomeCount" />
+  <input type="radio" name="yn_subletWithoutCOI" value="Yes" />
+  <input type="radio" name="yn_subletWithoutCOI" value="No" />
+  <textarea name="ynExplain_subletWithoutCOI"></textarea>
+  <textarea name="ynExplain_usesSubcontractors"></textarea>
+  <input type="hidden" name="yn_declinedCancelled" />
+  <textarea name="ynExplain_declinedCancelled"></textarea>
 </form>
 
 <form name="contact" data-netlify="true" netlify-honeypot="bot-field" hidden>

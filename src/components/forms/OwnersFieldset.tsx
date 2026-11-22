@@ -195,7 +195,7 @@ export function OwnersFieldset({
             </div>
             <div>
               <label htmlFor={id("titleRel")} className={labelClass}>Title or relationship to the business (optional)</label>
-              <input id={id("titleRel")} name={x.titleRel} type="text" autoComplete="off" maxLength={80} value={o.titleRel} onChange={(e) => update(i, "titleRel", e.target.value)} placeholder="Owner, President, Spouse" className={inputClass} />
+              <input id={id("titleRel")} name={x.titleRel} type="text" autoComplete="off" maxLength={24} value={o.titleRel} onChange={(e) => update(i, "titleRel", e.target.value)} placeholder="Owner, President, Spouse" className={inputClass} />
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
               <div>

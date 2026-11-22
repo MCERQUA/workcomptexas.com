@@ -129,7 +129,20 @@ export function AcordWcFields({ inputClass, labelClass, mutedTextClass = "text-m
           </>,
         )}
         {COVERAGE_OPTIONS.map((q) => yesNo(q.name, q.label, false))}
-        {text(COVERAGE_OTHER)}
+        {/* wcCoverageOther keeps its name but now carries Yes/blank (ticks the ACORD "Other" box); the words go in wcCoverageOtherDescription (11-char box). */}
+        <div>
+          <label htmlFor="acord-wcCoverageOtherDescription" className={labelClass}>{COVERAGE_OTHER.label} (a few words)</label>
+          <input
+            id="acord-wcCoverageOtherDescription"
+            name="wcCoverageOtherDescription"
+            type="text"
+            maxLength={11}
+            autoComplete="off"
+            onChange={(e) => setYN("wcCoverageOther", e.target.value.trim() ? "Yes" : "")}
+            className={inputClass}
+          />
+          <input type="hidden" name="wcCoverageOther" value={ans["wcCoverageOther"] ?? ""} />
+        </div>
       </Group>
 
       <Group title="Payroll by class and state" note="Add the details behind each class code you listed above. Estimates are fine." borderClass={borderClass}>
@@ -159,6 +172,24 @@ export function AcordWcFields({ inputClass, labelClass, mutedTextClass = "text-m
       </Group>
 
       <Group title="Operations and exposures" note="Yes or No. If you answer Yes, add a one-line explanation." borderClass={borderClass}>
+        {/* Canonical yn_/ynExplain_ names (ghostworkerscompinsurance.com donor): the one ACORD 130 question the uw* set lacks. */}
+        <fieldset className="space-y-2">
+          <legend className={labelClass}>Is any work sublet without certificates of insurance?</legend>
+          <div className="flex flex-wrap gap-3" role="radiogroup" aria-label="Is any work sublet without certificates of insurance?">
+            {["Yes", "No"].map((o) => (
+              <label key={o} className={radioWrap}>
+                <input type="radio" name="yn_subletWithoutCOI" value={o} checked={ans["yn_subletWithoutCOI"] === o} onChange={() => setYN("yn_subletWithoutCOI", o)} className="h-5 w-5 accent-current" />
+                {o}
+              </label>
+            ))}
+          </div>
+          {ans["yn_subletWithoutCOI"] === "Yes" && (
+            <div>
+              <label htmlFor="acord-ynExplain_subletWithoutCOI" className={labelClass}>Please explain (short answer)</label>
+              <textarea id="acord-ynExplain_subletWithoutCOI" name="ynExplain_subletWithoutCOI" rows={2} maxLength={EXPLANATION_MAX} className={`${inputClass} resize-none`} />
+            </div>
+          )}
+        </fieldset>
         {UW_QUESTIONS.map((q) => (
           <div key={q.name} className="space-y-3">
             {yesNo(q.name, q.label)}

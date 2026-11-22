@@ -176,7 +176,7 @@ export function allNewFieldNames(): string[] {
   names.push(WORK_STATES.name);
   add(EL_FIELDS);
   add(COVERAGE_OPTIONS);
-  names.push(COVERAGE_OTHER.name);
+  names.push(COVERAGE_OTHER.name, "wcCoverageOtherDescription");
   for (let n = 1; n <= CLASS_ROWS; n++) add(classFields(n));
   names.push(EXPERIENCE.name);
   for (let n = 1; n <= PRIOR_ROWS; n++) add(priorFields(n));
@@ -187,6 +187,7 @@ export function allNewFieldNames(): string[] {
   names.push("ownerName1"); // hidden mirror of row 1's ownerNames (OwnersFieldset)
   UW_QUESTIONS.forEach((q) => names.push(q.name, explanationName(q.name)));
   names.push(WORK_FROM_HOME_COUNT.name);
+  names.push("yn_subletWithoutCOI", "ynExplain_subletWithoutCOI", "ynExplain_usesSubcontractors", "yn_declinedCancelled", "ynExplain_declinedCancelled");
   return names;
 }
 
